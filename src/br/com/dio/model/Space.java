@@ -1,6 +1,5 @@
 package br.com.dio.model;
-// preparando ambiente
-//08:06
+
 public class Space {
 
     private Integer actual;
@@ -25,7 +24,7 @@ public class Space {
         this.actual = actual;
     }
 
-    public void cleanSpace() {
+    public void clearSpace() {
         setActual(null);
     }
 
