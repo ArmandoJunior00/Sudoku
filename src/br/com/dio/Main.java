@@ -69,18 +69,46 @@ public class Main {
             spaces.add(new ArrayList<>());
             for (int j = 0; j < BOARD_LIMIT; j++) {
                 var positionConfig = positions.get("%s,%s".formatted(i, j));
+                var expected = Integer.parseInt(positionConfig.split(";")[0]);
+                var fixed = Boolean.parseBoolean(positionConfig.split(";")[1]);
+                var currentSpace = new Space(expected, fixed);
+                spaces.get(i).add(currentSpace);
             }
+        }
+
+        board = new Board(spaces);
+        System.out.println("O jogo está pronto para começar");
+    }
+
+    private static void inputNumber() {
+        if (isNull(board)) {
+            System.out.println("O jogo ainda não foi iniciado");
+            return;
+        }
+        System.out.println("Informe em que coluna o número será inserido");
+        var col = runUntilGetValidNumber(0, 8);
+        System.out.println("Informe em que linha o número será inserido");
+        var row = runUntilGetValidNumber(0, 8);
+        System.out.printf("Informe o número que vai entrar na posição [%s,%s]\n", col, row);
+        var value = runUntilGetValidNumber(1, 9);
+        if (!board.changeValue(col, row, value)) {
+            System.out.printf("A posição [%s,%s] tem um valor fixo\n", col, row);
         }
     }
 
-    private static Object inputNumber() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'inputNumber'");
-    }
-
-    private static Object removeNumber() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'removeNumber'");
+    private static void removeNumber() {
+        if (isNull(board)) {
+            System.out.println("O jogo ainda não foi iniciado");
+            return;
+        }
+        System.out.println("Informe em que coluna o número será inserido");
+        var col = runUntilGetValidNumber(0, 8);
+        System.out.println("Informe em que linha o número será inserido");
+        var row = runUntilGetValidNumber(0, 8);
+        System.out.printf("Informe o número que vai entrar na posição [%s,%s]\n", col, row);
+        if (!board.clearValue(col, row)) {
+            System.out.printf("A posição [%s,%s] tem um valor fixo\n", col, row);
+        }
     }
 
     private static Object showCurrentGame() {
@@ -101,5 +129,14 @@ public class Main {
     private static Object finishGame() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'finishGame'");
+    }
+
+    private static int runUntilGetValidNumber(final int min, final int max) {
+        var current = scanner.nextInt();
+        while (current < min || current > max) {
+            System.out.printf("Informe um número entre %s e %s \n", min, max);
+            current = scanner.nextInt();
+        }
+        return current;
     }
 }
