@@ -111,9 +111,20 @@ public class Main {
         }
     }
 
-    private static Object showCurrentGame() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'showCurrentGame'");
+    private static void showCurrentGame() {
+        if (isNull(board)) {
+            System.out.println("O jogo ainda não foi iniciado");
+            return;
+        }
+
+        var args = new Object[81];
+        var argsPos = 0;
+        for (int i = 0; i < BOARD_LIMIT; i++) {
+            for (var col : board.getSpaces()) {
+                args[argsPos++] = "" + ((isNull(col.get(i).getActual())) ? "" : col.get(i).getActual());
+            }
+            //08:49
+        }
     }
 
     private static Object showGameStatus() {
