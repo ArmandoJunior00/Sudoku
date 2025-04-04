@@ -13,7 +13,7 @@ import java.util.stream.Stream;
 import static br.com.dio.util.BoardTemplate.BOARD_TEMPLATE;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
-import static java.util.stream.Collectors.toMap;
+//import static java.util.stream.Collectors.toMap;
 
 public class Main {
 
@@ -123,23 +123,57 @@ public class Main {
             for (var col : board.getSpaces()) {
                 args[argsPos++] = "" + ((isNull(col.get(i).getActual())) ? "" : col.get(i).getActual());
             }
-            //08:49
+
+        }
+
+        System.out.println("Seu jogo se encontra dessa forma: ");
+        System.out.printf((BOARD_TEMPLATE) + "\n", args);
+    }
+
+    private static void showGameStatus() {
+        if (isNull(board)) {
+            System.out.println("O jogo ainda não foi iniciado");
+            return;
+        }
+
+        System.out.printf("o jogo atualmente se encontra no status %s/n", board.getStatus().getLabel());
+        if (board.hasErrors()) {
+            System.out.println("O jogo contém erros");
+        } else {
+            System.out.println("O jogo não contém erros");
         }
     }
 
-    private static Object showGameStatus() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'showGameStatus'");
+    private static void clearGame() {
+        if (isNull(board)) {
+            System.out.println("O jogo ainda não foi iniciado");
+            return;
+        }
+        System.out.println("Tem certeza que deseja limpar seu jogo e perder todo seu progresso?");
+        var confirm = scanner.next();
+        while (!confirm.equalsIgnoreCase("sim") || !confirm.equalsIgnoreCase("não")) {
+            System.out.println("Iforme 'sim' ou 'não' ");
+            confirm = scanner.next();
+            if (!confirm.equalsIgnoreCase("sim")) {
+                board.reset();
+            }
+        }
     }
 
-    private static Object clearGame() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'clearGame'");
-    }
-
-    private static Object finishGame() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'finishGame'");
+    private static void finishGame() {
+        if (isNull(board)) {
+            System.out.println("O jogo ainda não foi iniciado");
+            return;
+        }
+        if(board.gameIsFinished()){
+            System.out.println("Parabéns você concluiu o jogo");
+            showCurrentGame();
+            board =null;
+        }else if(board.hasErrors()){
+                System.out.println("Seu jogo contém erros, verifique seu board e ajuste-o");
+        }else{
+            System.out.println("Você ainda precisa preencher algum espaço");
+        }
     }
 
     private static int runUntilGetValidNumber(final int min, final int max) {
